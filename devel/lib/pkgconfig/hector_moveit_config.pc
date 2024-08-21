@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: hector_moveit_config
+Description: Description of hector_moveit_config
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp std_msgs hector_uav_msgs

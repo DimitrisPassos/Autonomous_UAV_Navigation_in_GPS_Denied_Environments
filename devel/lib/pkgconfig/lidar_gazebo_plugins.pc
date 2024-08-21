@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: lidar_gazebo_plugins
+Description: Description of lidar_gazebo_plugins
+Version: 1.0.8
+Cflags: -I/home/dimitris/thesis/src/lidar_simulator/lidar_gazebo_plugins/include -I/usr/include -I/usr/include/gazebo-11 -I/usr/include/bullet -I/usr/include/simbody -I/usr/include/sdformat-9.10 -I/usr/include/ignition/math6 -I/usr/include/OGRE -I/usr/include/OGRE/Terrain -I/usr/include/OGRE/Paging -I/usr/include/ignition/transport8 -I/usr/include/ignition/msgs5 -I/usr/include/ignition/common3 -I/usr/include/ignition/fuel_tools4
+Libs: -L${prefix}/lib -lgazebo_ros_lidar -lgazebo_ros_lidar_gpu
+Requires: roscpp sensor_msgs gazebo_ros

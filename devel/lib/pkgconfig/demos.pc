@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: demos
+Description: Description of demos
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

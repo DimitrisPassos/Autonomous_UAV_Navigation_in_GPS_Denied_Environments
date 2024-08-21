@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/install
+
+Name: hector_moveit_exploration
+Description: Description of hector_moveit_exploration
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp moveit_core moveit_ros_planning_interface std_msgs hector_uav_msgs hector_moveit_actions

@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+import rospy
+from geometry_msgs.msg import Twist
+
+def move_robot():
+    rospy.init_node('cmd_vel_publisher', anonymous=True)
+
+    cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+    rospy.sleep(1)
+    
+    move_cmd = forward_command()
+    cmd_vel_pub.publish(move_cmd)
+
+    # Log the action
+    rospy.loginfo("Publishing cmd_vel: linear.x = %f, linear.z = %f", move_cmd.linear.x, move_cmd.linear.z)
+    rospy.sleep(2)
+    stop_cmd = Twist()
+    cmd_vel_pub.publish(stop_cmd)
+    rospy.loginfo("Published stop command")
+
+def increase_height():
+    rospy.init_node('cmd_vel_publisher', anonymous=True)
+
+    cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+    rospy.sleep(1)
+    
+    move_cmd = upward_command()
+    cmd_vel_pub.publish(move_cmd)
+    rospy.loginfo("Publishing cmd_vel: linear.x = %f, linear.z = %f", move_cmd.linear.x, move_cmd.linear.z)
+    rospy.sleep(2)
+    stop_cmd = Twist()
+    cmd_vel_pub.publish(stop_cmd)
+    rospy.loginfo("Published stop command")
+
+def stop_robot():
+    rospy.init_node('cmd_vel_publisher', anonymous=True)
+
+    cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+    rospy.sleep(1)
+
+    move_cmd = Twist()
+    cmd_vel_pub.publish(move_cmd)
+    rospy.loginfo("Publishing cmd_vel: linear.x = %f, linear.z = %f", move_cmd.linear.x, move_cmd.linear.z)
+    rospy.loginfo("Published stop command")
+    
+
+def forward_command():
+    move_cmd = Twist()
+
+    move_cmd.linear.x = 1.0
+    move_cmd.linear.y = 0.0
+    move_cmd.linear.z = 0.0
+
+    move_cmd.angular.x = 0.0
+    move_cmd.angular.y = 0.0
+    move_cmd.angular.z = 0.0
+    return move_cmd
+
+def upward_command():
+    move_cmd = Twist()
+
+    move_cmd.linear.x = 0.0
+    move_cmd.linear.y = 0.0
+    move_cmd.linear.z = 1.0
+
+    move_cmd.angular.x = 0.0
+    move_cmd.angular.y = 0.0
+    move_cmd.angular.z = 0.0
+    return move_cmd
+
+if __name__ == '__main__':
+    try:
+        move_robot()
+    except rospy.ROSInterruptException:
+        stop_robot()

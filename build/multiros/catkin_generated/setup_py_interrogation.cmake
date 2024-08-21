@@ -1,0 +1,7 @@
+set(multiros_SETUP_PY_SETUP_MODULE "distutils.core")
+set(multiros_SETUP_PY_VERSION "1.0.0")
+set(multiros_SETUP_PY_SCRIPTS "")
+set(multiros_SETUP_PY_PACKAGES "multiros")
+set(multiros_SETUP_PY_PACKAGE_DIRS "src/multiros")
+set(multiros_SETUP_PY_MODULES "")
+set(multiros_SETUP_PY_MODULE_DIRS "")

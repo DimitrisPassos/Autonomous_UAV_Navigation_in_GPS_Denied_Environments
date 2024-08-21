@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/install
+
+Name: rtabmap_drone_example
+Description: Description of rtabmap_drone_example
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/install
+
+Name: hector_moveit_perception
+Description: Description of hector_moveit_perception
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

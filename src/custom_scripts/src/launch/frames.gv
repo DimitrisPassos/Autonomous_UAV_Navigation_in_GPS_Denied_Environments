@@ -1,0 +1,15 @@
+digraph G {
+"base_link" -> "front_cam_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 271.771 sec old)\nBuffer length: 0.000 sec\n"];
+"base_stabilized" -> "base_link"[label="Broadcaster: /ground_truth_to_tf\nAverage rate: 100.222 Hz\nMost recent transform: 271.764 ( 0.007 sec old)\nBuffer length: 4.500 sec\n"];
+"front_cam_link" -> "front_cam_optical_frame"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 271.771 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "laser0_frame"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 271.771 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "sonar_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 271.771 sec old)\nBuffer length: 0.000 sec\n"];
+"world" -> "base_footprint"[label="Broadcaster: /ground_truth_to_tf\nAverage rate: 100.222 Hz\nMost recent transform: 271.764 ( 0.007 sec old)\nBuffer length: 4.500 sec\n"];
+"map" -> "world"[label="Broadcaster: /hector_mapping\nAverage rate: 40.223 Hz\nMost recent transform: 271.741 ( 0.030 sec old)\nBuffer length: 4.475 sec\n"];
+"base_footprint" -> "base_stabilized"[label="Broadcaster: /ground_truth_to_tf\nAverage rate: 100.222 Hz\nMost recent transform: 271.764 ( 0.007 sec old)\nBuffer length: 4.500 sec\n"];
+"map" -> "scanmatcher_frame"[label="Broadcaster: /hector_mapping\nAverage rate: 40.223 Hz\nMost recent transform: 271.741 ( 0.030 sec old)\nBuffer length: 4.475 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 271.771"[ shape=plaintext ] ;
+ }->"map";
+}

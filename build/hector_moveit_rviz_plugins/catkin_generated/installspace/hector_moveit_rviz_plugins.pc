@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/install
+
+Name: hector_moveit_rviz_plugins
+Description: Description of hector_moveit_rviz_plugins
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs

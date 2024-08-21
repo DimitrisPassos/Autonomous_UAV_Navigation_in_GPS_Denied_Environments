@@ -1,0 +1,21 @@
+global_costmap:
+   global_frame: map
+   robot_base_frame: base_footprint
+   update_frequency: 1.0
+   publish_frequency: 2
+   static_map: true
+   transform_tolerance: 0.5
+
+   width: 130.0
+   height: 130.0
+   resolution: 0.1
+   transform_tolerance: 0.5
+   origin_x: -15
+   origin_y: -15
+   plugins:
+    - {name: obstacle_layer,          type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"}
+
+   obstacle_layer:
+     observation_sources: Pointsensor   #scan
+     Pointsensor: {data_type: PointCloud2, topic: camera/depth/points, sensor_frame: base_footprint, marking: true, clearing: true, min_obstacle_height: 0.0, max_obstacle_height: 3}

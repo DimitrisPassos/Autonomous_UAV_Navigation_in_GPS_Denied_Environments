@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: smb_teleop_twist_joy
+Description: Description of smb_teleop_twist_joy
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs sensor_msgs roscpp joy

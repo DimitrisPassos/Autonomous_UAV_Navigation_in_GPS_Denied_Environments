@@ -1,0 +1,30 @@
+<launch>
+  <!-- All settings -->
+  <arg name="robot_name" default="smb"/>
+  <arg name="launch_prefix" default=""/> <!-- gdb -ex run //args -->
+
+  <!-- Config files -->
+
+
+  <!-- Static TF -->
+  <node pkg="tf" type="static_transform_publisher" name="tf_53" args="0 0 0 0 0 0 world navigation 100" />
+
+
+  <include file="$(find smb_gazebo)/launch/spawn_smb.launch">
+    <arg name="joystick" value="true"/>
+    <arg name="x" value="0.0" />
+    <arg name="y" value="0.0" />
+    <arg name="z" value="0.5" />
+    
+  </include>
+
+  <node pkg="topic_tools" type="relay" name="vlp_relay" args="/velodyne_points /input_pointcloud" />
+  <node pkg="topic_tools" type="relay" name="front_lidar_relay" args="/lidar_front_points /input_pointcloud" />
+
+  <arg name="odometry_topic" default="/ground_truth/state"/>
+  <node name="pose_throttler" type="throttle" pkg="topic_tools" args="messages $(arg robot_name)/ground_truth/pose_with_covariance 10 /msf_core/pose" />
+
+
+
+
+</launch>

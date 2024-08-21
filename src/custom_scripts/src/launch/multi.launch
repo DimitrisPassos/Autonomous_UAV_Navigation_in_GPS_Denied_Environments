@@ -1,0 +1,17 @@
+<launch>
+<arg name="gui" value="false"/>
+
+   <!-- Gazebo  -->
+  <include file="/home/dimitris/thesis/src/custom_scripts/src/launch/training.launch" />
+
+  <!-- Robot with diff drive -->
+  <include file="/home/dimitris/thesis/src/custom_scripts/src/launch/smb_test.launch">
+     <arg name="robot_name" value="smb" />
+     
+   </include>
+
+  <!-- RVIZ -->
+  <!-- <include file="$(find takeoff_land)/launch/takeoff_land.launch"/> -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find hector_quadrotor_demo)/rviz_cfg/indoor_slam.rviz"/>
+
+</launch>

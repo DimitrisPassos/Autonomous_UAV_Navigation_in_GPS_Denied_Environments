@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/fbet" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/geographic_info" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/gym_sims/src/custom_td3/gym-pybullet-drones" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/hector_quadrotor_noetic" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/hrl-kdl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/lidar_simulator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/m-explore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/multiros" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/octomap_obstacle_avoidance" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/rrt_exploration" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/rtabmap_drone_example" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/teleop_twist_keyboard" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/unique_identifier" vcs="Git" />
+  </component>
+</project>

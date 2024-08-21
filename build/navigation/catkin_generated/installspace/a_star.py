@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+
+import rospy
+import numpy as np
+from geometry_msgs.msg import PoseStamped, TransformStamped
+from octomap_msgs.msg import Octomap
+from visualization_msgs.msg import Marker
+from trajectory_msgs.msg import MultiDOFJointTrajectory, MultiDOFJointTrajectoryPoint
+import ompl.base as ob
+import ompl as os
+import ompl.geometric as og
+import tf.transformations as tft
+from fcl import CollisionObject, CollisionRequest, CollisionResult, Vec3f, Quaternion3f, Box, OcTree
+
+class UAVPathPlanner:
+    def __init__(self):
+        # ROS node initialization
+        rospy.init_node('uav_path_planner', anonymous=True)
+
+        # Parameters
+        self.octree = None
+        self.uav_pose = None
+        self.goal_pose = None
+
+        # Subscribers
+        rospy.Subscriber('/octomap_binary', Octomap, self.octomap_callback)
+        rospy.Subscriber('/amcl_pose', PoseStamped, self.pose_callback)
+        rospy.Subscriber('/next_goal', TransformStamped, self.goal_callback)
+
+        # Publishers
+        self.vis_pub = rospy.Publisher('/visualization_marker', Marker, queue_size=10)
+        self.traj_pub = rospy.Publisher('/waypoints', MultiDOFJointTrajectory, queue_size=10)
+        self.smooth_traj_pub = rospy.Publisher('/waypoints_smooth', MultiDOFJointTrajectory, queue_size=10)
+
+        # Initialize OMPL path planner
+        self.setup_planner()
+
+    def setup_planner(self):
+        # Define the state space as SE3 (position + orientation)
+        self.space = ob.SE3StateSpace()
+
+        # Define the bounds for the R^3 part of SE(3)
+        bounds = ob.RealVectorBounds(3)
+        bounds.setLow(-10)  # Define appropriate bounds for your space
+        bounds.setHigh(10)
+        self.space.setBounds(bounds)
+
+        # Define the space information
+        self.si = ob.SpaceInformation(self.space)
+
+        # Set the state validity checker
+        self.si.setStateValidityChecker(ob.StateValidityCheckerFn(self.is_state_valid))
+
+        # Define the problem definition (start and goal)
+        self.pdef = ob.ProblemDefinition(self.si)
+
+    def octomap_callback(self, msg):
+        # Load the octomap
+        octree = octomap.AbstractOcTree.create_from_octomap(msg)
+        self.octree = octomap.OcTree(octree)
+
+        rospy.loginfo("Octomap received and processed")
+
+    def pose_callback(self, msg):
+        # Set UAV's current position
+        self.uav_pose = msg.pose.position
+        self.start_planning()
+
+    def goal_callback(self, msg):
+        # Set goal position
+        self.goal_pose = msg.transform.translation
+        self.start_planning()
+
+    def is_state_valid(self, state):
+        # Cast state to SE3StateSpace
+        se3_state = state.as_SE3StateSpace()
+
+        # Extract position and rotation
+        pos = se3_state.getX(), se3_state.getY(), se3_state.getZ()
+        rot = se3_state.rotation().x, se3_state.rotation().y, se3_state.rotation().z, se3_state.rotation().w
+
+        # Create FCL collision object
+        aircraft_box = Box(0.8, 0.8, 0.2)
+        aircraft_obj = CollisionObject(aircraft_box)
+
+        # Set UAV's position and rotation
+        translation = Vec3f(*pos)
+        rotation = Quaternion3f(*rot)
+        aircraft_obj.setTransform(rotation, translation)
+
+        # Perform collision check with Octomap (if available)
+        if self.octree:
+            octree_obj = CollisionObject(OcTree(self.octree))
+            request = CollisionRequest()
+            result = CollisionResult()
+            is_collision = aircraft_obj.collide(octree_obj, request, result)
+            return not is_collision
+
+        return True
+
+    def start_planning(self):
+        # Start planning when both start and goal poses are available
+        if self.uav_pose and self.goal_pose:
+            start = ob.State(self.space)
+            start().setX(self.uav_pose.x)
+            start().setY(self.uav_pose.y)
+            start().setZ(self.uav_pose.z)
+
+            goal = ob.State(self.space)
+            goal().setX(self.goal_pose.x)
+            goal().setY(self.goal_pose.y)
+            goal().setZ(self.goal_pose.z)
+
+            # Set start and goal states
+            self.pdef.clearStartStates()
+            self.pdef.addStartState(start)
+            self.pdef.setGoalState(goal)
+
+            # Plan the path
+            self.plan()
+
+    def plan(self):
+        # Create an RRT* planner
+        planner = og.RRTstar(self.si)
+        planner.setProblemDefinition(self.pdef)
+        planner.setup()
+
+        # Solve the planning problem
+        solved = planner.solve(5.0)  # 5 seconds for planning
+
+        if solved:
+            rospy.loginfo("Path found")
+
+            # Extract and publish the path
+            path = self.pdef.getSolutionPath().as_geometric()
+            self.publish_path(path)
+
+        else:
+            rospy.logwarn("Path not found")
+
+    def publish_path(self, path):
+        # Publish raw waypoints
+        traj_msg = MultiDOFJointTrajectory()
+        traj_msg.header.stamp = rospy.Time.now()
+        traj_msg.header.frame_id = "map"
+
+        for i in range(path.getStateCount()):
+            point_msg = MultiDOFJointTrajectoryPoint()
+            state = path.getState(i).as_SE3StateSpace()
+
+            point_msg.transforms.append(
+                self.create_transform(state.getX(), state.getY(), state.getZ())
+            )
+            traj_msg.points.append(point_msg)
+
+        self.traj_pub.publish(traj_msg)
+
+        # Optionally apply smoothing and publish the smooth trajectory
+        # (Add B-spline smoothing code here if needed)
+
+    def create_transform(self, x, y, z):
+        # Create geometry_msgs/Transform with the specified x, y, z
+        transform = geometry_msgs.Transform()
+        transform.translation.x = x
+        transform.translation.y = y
+        transform.translation.z = z
+        transform.rotation = geometry_msgs.Quaternion()  # Identity rotation
+        return transform
+
+if __name__ == "__main__":
+    try:
+        planner = UAVPathPlanner()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        pass

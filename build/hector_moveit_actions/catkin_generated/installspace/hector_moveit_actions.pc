@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/install
+
+Name: hector_moveit_actions
+Description: Description of hector_moveit_actions
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: roscpp actionlib_msgs hector_uav_msgs

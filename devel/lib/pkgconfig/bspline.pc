@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: bspline
+Description: Description of bspline
+Version: 0.0.0
+Cflags: -I/home/dimitris/thesis/devel/include -I/home/dimitris/thesis/src/FUEL/fuel_planner/bspline/include
+Libs: -L${prefix}/lib -lbspline
+Requires: message_runtime

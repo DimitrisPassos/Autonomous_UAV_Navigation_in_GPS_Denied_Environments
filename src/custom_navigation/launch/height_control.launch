@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="custom_navigation" type="height_controller.py" name="height_control" output="screen">
+        
+    </node>
+</launch>

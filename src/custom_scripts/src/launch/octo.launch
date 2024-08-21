@@ -1,0 +1,24 @@
+<launch>
+
+<arg name="map" default="/home/dimitris/thesis/warehouse.bt"/>
+<node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">
+  <param name="frame_id" value="map" />
+  <param name="resolution" value="0.05" /> <!-- Adjust resolution as needed -->
+  <param name="occupancy_min_z" value="0.6" />
+  <param name="occupancy_max_z" value="23.0" />
+  <param name="sensor_model/max_range" value="100.0" /> <!-- Set max sensor range -->
+  <param name="latch" value="true" /> <!-- Latch map topic for slower connections -->
+  <param name="incremental_2D_projection" value="false" /> <!-- Enable/Disable 2D projection -->
+  <param name="publish_free_space" value="true"/>
+  <param name="publish_frontier_space" value="true"/>
+  <param name="publish_unknown_space" value="true" />
+  <param name="update_rate" value="1.0" />
+
+  <param name="sensor_model/hit" value="0.7" />
+  <remap from="cloud_in" to="/camera/depth/points" />
+</node>
+
+  <!-- <node pkg="octomap_server" type="octomap_saver" name="octomap_saver" output="screen">
+        <param name="filename" value="octomap.bt"/>
+    </node> -->
+</launch>

@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: octomap_avoid
+Description: Description of octomap_avoid
+Version: 0.0.0
+Cflags: -I/home/dimitris/thesis/src/octomap_obstacle_avoidance/include
+Libs: -L${prefix}/lib -loctomap_avoid
+Requires: 

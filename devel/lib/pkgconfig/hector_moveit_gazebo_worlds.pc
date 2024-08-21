@@ -1,0 +1,8 @@
+prefix=/home/dimitris/thesis/devel
+
+Name: hector_moveit_gazebo_worlds
+Description: Description of hector_moveit_gazebo_worlds
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

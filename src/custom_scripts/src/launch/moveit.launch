@@ -1,0 +1,21 @@
+<launch>
+  <!-- Start the MoveIt! move_group node -->
+  <node name="move_group" pkg="moveit_ros_move_group" type="move_group" output="screen">
+    <!-- Add the controller manager parameter -->
+    <param name="moveit_controller_manager" value="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
+  </node>
+  <!-- Launch RViz with MoveIt! visualization -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find your_moveit_pkg)/launch/moveit.rviz" /> -->
+
+  <!-- Load robot description (URDF) -->
+  <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find your_uav_description_pkg)/urdf/uav.urdf.xacro'" /> -->
+
+  <!-- Load MoveIt configuration files -->
+  <rosparam command="load" file="/home/dimitris/Record/config/kinematics.yaml" />
+  <rosparam command="load" file="/home/dimitris/Record/config/ompl_planning.yaml" />
+  <rosparam command="load" file="/home/dimitris/Record/config/joint_limits.yaml" />
+  <rosparam command="load" file="/home/dimitris/Record/config/ros_controllers.yaml" />
+  <!-- Robot controllers -->
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+      args="ros_control" />
+</launch>

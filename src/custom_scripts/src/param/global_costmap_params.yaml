@@ -1,0 +1,15 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: base_link
+
+  update_frequency: 10.0
+  publish_frequency: 10.0
+  transform_tolerance: 0.5
+  width: 300  # Increase if necessary
+  height: 300  #
+  static_map: false
+ 
+  plugins:
+    - {name: static,                  type: "costmap_2d::StaticLayer"}
+    - {name: obstacles_laser,         type: "costmap_2d::VoxelLayer"}
+    - {name: inflation,               type: "costmap_2d::InflationLayer"}
